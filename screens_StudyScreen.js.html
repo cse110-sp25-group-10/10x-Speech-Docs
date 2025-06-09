@@ -32,34 +32,52 @@ import { shuffleCards } from "../deck.js";
 const template = document.createElement("template");
 template.innerHTML = `
     &lt;link rel="stylesheet" href="../../stylesheets/styles.css">
-    &lt;link rel="stylesheet" href="../../stylesheets/deck_selection.css">
-    &lt;link rel="stylesheet" href="../../stylesheets/preparing_speech.css">
-    &lt;link rel="stylesheet" href="../../stylesheets/existing_flashcard.css">
     &lt;link rel="stylesheet" href="../../stylesheets/study_screen.css">
-    &lt;header>
+    &lt;header id="study-screen-header">
+        &lt;button id="back-button">
+            &lt;svg fill="#000000" width="2em" height="2em" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            &lt;g id="SVGRepo_bgCarrier" stroke-width="0">&lt;/g>&lt;g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+            &lt;/g>&lt;g id="SVGRepo_iconCarrier">&lt;path d="M27 18.039L16 9.501 5 18.039V14.56l11-8.54 11 8.538v3.481zm-2.75-.31v8.251h-5.5v-5.5h-5.5v5.5h-5.5v-8.25L16
+            11.543l8.25 6.186z">&lt;/path>&lt;/g>&lt;/svg>&lt;/button>
         &lt;h2 id="deck-name" class="title">&lt;/h2>
-        &lt;button id="back-button">Back&lt;/button>
-    &lt;/header>
-    &lt;section id="card-container" class="flash-card-container">
+        &lt;button id="shuffle-toggle-button">Shuffle: Off&lt;/button>
+    &lt;/header id="study-screen-header">
+    &lt;section id="card-container">
         &lt;div class="flip-card">
             &lt;div class="flip-card-inner">
-                &lt;div class="card card-front">&lt;/div>
-                &lt;div class="card card-back">&lt;/div>
+                &lt;div class="card card-front">
+                    &lt;p id="front-content" class="card-content" style="color:black">Tomatoes!&lt;/p>
+                &lt;/div>
+                &lt;div class="card card-back">
+                    &lt;p id="back-content" class="card-content" style="color:black">Potatoes!&lt;/p>
+                &lt;/div>
             &lt;/div>
         &lt;/div>
     &lt;/section>
-    &lt;span class="card-counter">Card 0 / 0&lt;/span>
-    &lt;div class="card-timestamps">&lt;/div>
-    &lt;button id="clear-attempts-button" style="margin-top:8px;">Clear Attempts&lt;/button>
-    &lt;footer>
+    &lt;button id="flip-card">
+        &lt;svg fill="#000000" width="1em" height="1em" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg">
+            &lt;g id="SVGRepo_bgCarrier" stroke-width="0">&lt;/g>&lt;g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+            &lt;/g>&lt;g id="SVGRepo_iconCarrier"> &lt;g data-name="Layer 2"> &lt;g data-name="flip-2"> &lt;rect width="24" height="24"
+            transform="rotate(180 12 12)" opacity="0">&lt;/rect> &lt;path d="M6.09 19h12l-1.3 1.29a1 1 0 0 0 1.42 1.42l3-3a1 1 0 0
+            0 0-1.42l-3-3a1 1 0 0 0-1.42 0 1 1 0 0 0 0 1.42l1.3 1.29h-12a1.56 1.56 0 0 1-1.59-1.53V13a1 1 0 0 0-2 0v2.47A3.56 3.56 0
+            0 0 6.09 19z">&lt;/path> &lt;path d="M5.79 9.71a1 1 0 1 0 1.42-1.42L5.91 7h12a1.56 1.56 0 0 1 1.59 1.53V11a1 1 0 0 0
+            2 0V8.53A3.56 3.56 0 0 0 17.91 5h-12l1.3-1.29a1 1 0 0 0 0-1.42 1 1 0 0 0-1.42 0l-3 3a1 1 0 0 0 0 1.42z">&lt;/path> &lt;/g> &lt;/g> &lt;/g>
+        &lt;/svg>
+         Flip
+    &lt;/button>
+    &lt;footer id="study-footer">
         &lt;section class="status">
-            &lt;button id="practice-button">Start Practice&lt;/button>
-            &lt;button id="shuffle-toggle-button">Shuffle: On&lt;/button>
-            &lt;span class="timer">Time: 0s&lt;/span>
+            &lt;span class="timer">
+                &lt;svg fill="#000000" width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                &lt;g id="SVGRepo_bgCarrier" stroke-width="0">&lt;/g>&lt;g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                stroke-linejoin="round">&lt;/g>&lt;g id="SVGRepo_iconCarrier"> &lt;g data-name="Layer 2"> &lt;g data-name="clock">
+                &lt;rect width="24" height="24" transform="rotate(180 12 12)" opacity="0">&lt;/rect> &lt;path d="M12 2a10 10 0 1
+                0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z">&lt;/path> &lt;path d="M16 11h-3V8a1 1 0 0 0-2 0v4a1
+                1 0 0 0 1 1h4a1 1 0 0 0 0-2z">&lt;/path> &lt;/g> &lt;/g> &lt;/g>&lt;/svg> 0s&lt;/span>
         &lt;/section>
-        &lt;nav class="controls bottom">
+        &lt;nav id="study-controls" class="controls bottom">
             &lt;button id="prev-card" disabled>Previous&lt;/button>
-            &lt;button id="flip-card" disabled>Flip&lt;/button>
+            &lt;button id="practice-button">Start Practice&lt;/button>
             &lt;button id="next-card" disabled>Next&lt;/button>
         &lt;/nav>
     &lt;/footer>
@@ -73,7 +91,7 @@ class StudyScreen extends HTMLElement {
 
         this._deck = null;
         this.shuffledCards = [];
-        this.shouldShuffle = true;
+        this.shouldShuffle = false;
         this.currentIndex = 0;
         this.isPracticing = false;
         this.timerInterval = null;
@@ -92,15 +110,15 @@ class StudyScreen extends HTMLElement {
             backButton: this.shadowRoot.querySelector("#back-button"),
             practiceButton: this.shadowRoot.querySelector("#practice-button"),
             timer: this.shadowRoot.querySelector(".timer"),
-            cardCounter: this.shadowRoot.querySelector(".card-counter"),
             prevButton: this.shadowRoot.querySelector("#prev-card"),
             flipButton: this.shadowRoot.querySelector("#flip-card"),
             nextButton: this.shadowRoot.querySelector("#next-card"),
             cardContainer: this.shadowRoot.querySelector("#card-container"),
             cardFront: this.shadowRoot.querySelector(".card-front"),
             cardBack: this.shadowRoot.querySelector(".card-back"),
+            cardFrontContent: this.shadowRoot.querySelector("#front-content"),
+            cardBackContent: this.shadowRoot.querySelector("#back-content"),
             flipCardContainer: this.shadowRoot.querySelector(".flip-card"),
-            cardTimestamps: this.shadowRoot.querySelector(".card-timestamps"),
             clearAttemptsButton: this.shadowRoot.querySelector("#clear-attempts-button"),
             shuffleToggleButton: this.shadowRoot.querySelector("#shuffle-toggle-button"),
         };
@@ -122,10 +140,6 @@ class StudyScreen extends HTMLElement {
         this.elements.cardContainer.addEventListener(
             "click",
             this.handleCardContainerClick.bind(this)
-        );
-        this.elements.clearAttemptsButton.addEventListener(
-            "click",
-            this.handleClearAttemptsClick.bind(this)
         );
 
         this.updateShuffleButtonLabel();
@@ -166,7 +180,6 @@ class StudyScreen extends HTMLElement {
             // Update UI
             this.elements.practiceButton.textContent = "End Practice";
             this.elements.practiceButton.classList.add("active");
-            this.elements.flipButton.removeAttribute("disabled");
             this.elements.shuffleToggleButton.disabled = this.isPracticing;
             this.startTimer();
 
@@ -180,8 +193,11 @@ class StudyScreen extends HTMLElement {
             // Update UI
             this.elements.practiceButton.textContent = "Start Practice";
             this.elements.practiceButton.classList.remove("active");
-            this.elements.flipButton.setAttribute("disabled", "");
+
             this.stopTimer();
+
+            // TODO: You'll need to change this to get the time to render right!!!
+
             this.elements.timer.textContent = "Time: 0s";
 
             // Switch to default layout
@@ -215,7 +231,7 @@ class StudyScreen extends HTMLElement {
      * Flips the current card to show the back or front.
      */
     flipCard() {
-        if (!this._deck || this._deck.cards.length === 0 || !this.isPracticing) return;
+        if (!this._deck || this._deck.cards.length === 0) return;
         this.elements.flipCardContainer.classList.toggle("flipped");
     }
 
@@ -227,18 +243,18 @@ class StudyScreen extends HTMLElement {
         if (!this._deck) return;
 
         // Always reset flip on render in practice mode
-        if (this.isPracticing) {
-            this.elements.flipCardContainer.classList.remove("flipped");
-        }
+        // TODO: Determine the workflow we want (always reset on all screens?)
+        //if (this.isPracticing) {
+        this.elements.flipCardContainer.classList.remove("flipped");
+        //}
 
         // Update deck name
-        this.elements.deckName.textContent = `Studying: ${this._deck.deckName}`;
+        this.elements.deckName.textContent = `${this._deck.deckName}`;
 
         const cardCount = this.shuffledCards.length;
         if (cardCount === 0) {
-            this.elements.cardFront.textContent = "This deck has no cards.";
-            this.elements.cardBack.textContent = "";
-            this.elements.cardCounter.textContent = "Card 0 / 0";
+            this.elements.cardFrontContent.textContent = "This deck has no cards.";
+            this.elements.cardBackContent.textContent = "";
             this.elements.practiceButton.setAttribute("disabled", "");
             return;
         }
@@ -249,59 +265,8 @@ class StudyScreen extends HTMLElement {
 
         // Update card content
         const currentCard = this.shuffledCards[this.currentIndex];
-        this.elements.cardFront.textContent = currentCard.frontText;
-        this.elements.cardBack.textContent = currentCard.backText;
-
-        // Update card counter
-        this.elements.cardCounter.textContent = `Card ${this.currentIndex + 1} / ${cardCount}`;
-
-        // Display all timestamps for the current card
-        const originalCard = this._deck.cards.find(
-            (card) =>
-                card.frontText === currentCard.frontText &amp;&amp; card.backText === currentCard.backText
-        );
-
-        if (
-            originalCard &amp;&amp;
-            Array.isArray(originalCard.practiceTimes) &amp;&amp;
-            originalCard.practiceTimes.length > 0
-        ) {
-            let html =
-                "&lt;strong>All attempts for this card:&lt;/strong>&lt;ul style='margin:0;padding-left:1.2em'>";
-            originalCard.practiceTimes.forEach((t, i) => {
-                html += `&lt;li>Attempt ${i + 1}: ${t}s&lt;/li>`;
-            });
-            html += "&lt;/ul>";
-            this.elements.cardTimestamps.innerHTML = html;
-        } else {
-            this.elements.cardTimestamps.innerHTML = "&lt;em>No practice data for this card yet.&lt;/em>";
-        }
-    }
-
-    /**
-     * Updates the displayed timestamps for the current card.
-     * @param {Object} card - The current card object.
-     */
-    updateCardTimestamps(card) {
-        const container = this.shadowRoot.querySelector(".card-timestamps");
-        container.innerHTML = ""; // Clear previous timestamps
-
-        if (!card.practiceTimes || card.practiceTimes.length === 0) {
-            const noDataMessage = document.createElement("div");
-            noDataMessage.textContent = "No practice data available for this card.";
-            container.appendChild(noDataMessage);
-            return;
-        }
-
-        // Create a list to display all practice times for the card
-        const list = document.createElement("ul");
-        card.practiceTimes.forEach((time, index) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = `Attempt ${index + 1}: ${time}s`;
-            list.appendChild(listItem);
-        });
-
-        container.appendChild(list);
+        this.elements.cardFrontContent.textContent = currentCard.frontText;
+        this.elements.cardBackContent.textContent = currentCard.backText;
     }
 
     /**
@@ -400,58 +365,7 @@ class StudyScreen extends HTMLElement {
     updateShuffleButtonLabel() {
         this.elements.shuffleToggleButton.textContent = `Shuffle: ${this.shouldShuffle ? "On" : "Off"}`;
     }
-    
-    
 
-    /**
-     * Handles clearing attempts for the current card.
-     * Shows a dialog to choose between clearing the last attempt or all attempts.
-     */
-    async handleClearAttemptsClick() {
-        const currentCard = this.shuffledCards[this.currentIndex];
-        const originalCard = this._deck.cards.find(
-            (card) =>
-                card.frontText === currentCard.frontText &amp;&amp; card.backText === currentCard.backText
-        );
-        if (!originalCard || !Array.isArray(originalCard.practiceTimes)) return;
-
-        // Custom dialog with two options
-        const dialog = document.createElement("dialog");
-        dialog.className = "custom-dialog";
-        dialog.innerHTML = `
-            &lt;form method="dialog">
-                &lt;p>What would you like to clear?&lt;/p>
-                &lt;menu>
-                    &lt;button value="clear-current">Clear Current Attempt&lt;/button>
-                    &lt;button value="clear-all" autofocus>Clear All Attempts&lt;/button>
-                    &lt;button value="cancel">Cancel&lt;/button>
-                &lt;/menu>
-            &lt;/form>
-        `;
-        document.body.appendChild(dialog);
-
-        const result = await new Promise((resolve) => {
-            function handleClose() {
-                resolve(dialog.returnValue);
-                dialog.removeEventListener("close", handleClose);
-                dialog.remove();
-            }
-            dialog.addEventListener("close", handleClose);
-            dialog.showModal();
-        });
-
-        if (result === "clear-all") {
-            originalCard.practiceTimes = [];
-            await saveDeck(this._deck);
-            this.render();
-        } else if (result === "clear-current") {
-            if (originalCard.practiceTimes.length > 0) {
-                originalCard.practiceTimes.pop();
-                await saveDeck(this._deck);
-                this.render();
-            }
-        }
-    }
 }
 
 customElements.define("study-screen", StudyScreen);
@@ -471,7 +385,7 @@ customElements.define("study-screen", StudyScreen);
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jun 08 2025 22:38:29 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jun 09 2025 02:00:09 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
